@@ -16,87 +16,35 @@
 					{% for item_menu in links_menu%}
 						<li><a href="{{ item_menu.href }}">{{ item_menu.name|title }}</a> </li>
 					{% endfor %}
+
+    				<li class="dropdown-toggle" data-toggle="dropdown"><a href="#">Категории</a></li>
+					<div class="dropdown-menu">
+						{% for cat in all_categories %}
+							<a class="dropdown-item" href="{% url 'products:index' %}{{ cat.id }}">{{ cat }}</a>
+						{% endfor %}
+					</div>
+
 				</ul>
 			</div>
-
-			<div class="details-products">
-				<div class="details-slider">
-					<div class="slider-product">
-						<img src="/static/geekshop/img/slider1.jpg">
-					</div>
-					<div class="slider-control">
-						<div class="block">
-							<a href="#"><img src="/static/geekshop/img/controll.jpg" alt="">
-								<div class="text"></div>
-							</a>
+			<div class="featured">
+			<a class="explore" href="#">показать все <img src="{% static 'geekshop/img/arrow.png' %}" alt=""></a>
+			<div class="clearfix">
+			</div>
+			<div class="tab-content">
+				{% for product in products %}
+				<div class="block">
+					<a href="#"><img src="/media/{{ product.image }}" alt="{{ product.short_desc }}" style="width: 100%;">
+						<div class="text">
+							<img src="/static/geekshop/img/icon-hover.png" alt="arrow">
+							<h4>{{ product.category.name }}</h4>
+							<h4>{{ product.name }}</h4>
+							<p>{{ product.category.name|title }}</p>
 						</div>
-						<div class="block">
-							<a href="#"><img src="/static/geekshop/img/controll1.jpg" alt="">
-								<div class="text"></div>
-							</a>
-						</div>
-						<div class="block">
-							<a href="#"><img src="/static/geekshop/img/controll2.jpg" alt="">
-								<div class="text"></div>
-							</a>
-						</div>
-					</div>
-				</div>
-
-				<div class="description">
-					<h3 class="big-bold">Отличный стул</h3>
-					<h3 class="red">горячее предложение</h3>
-					<p class="price"> 2585.9 <span>руб</span></p>
-					<a href="#" class="red-button">
-						заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
 					</a>
-					<div class="description-text">
-						<p>Расположитесь комфортно.</p> 
-						<p>Отличное качество материалов
-						позволит вам это.</p> 
-						<p>Различные цвета</p>
-						<p>высочайший уровень
-						эргономики и прочность.</p>
-					</div>
 				</div>
+				{% endfor %}
 			</div>
-
-			<div class="related">
-				<div class="title clearfix">
-					<h2>Похожие продукты</h2>
-					<a class="explore" href="#">показать все <img src="/static/geekshop/img/arrow.png" alt=""></a>
-				</div>
-				<div class="related-products clearfix">
-					<div class="block">
-						<a href="#"><img src="/static/geekshop/img/product-11.jpg" alt="">
-							<div class="text">
-								<img src="/static/geekshop/img/icon-hover.png" alt="img">
-								<h4>Стул повышенного качества</h4>
-								<p>Не оторваться. </p>
-							</div>
-						</a>
-					</div>
-					<div class="block">
-						<a href="#"><img src="/static/geekshop/img/product-21.jpg" alt="">
-							<div class="text">
-								<img src="/static/geekshop/img/icon-hover.png" alt="img">
-								<h4>Стул повышенного качества</h4>
-								<p>Не оторваться. </p>
-							</div>
-						</a>
-					</div>
-					<div class="block">
-						<a href="#"><img src="/static/geekshop/img/product-31.jpg" alt="">
-							<div class="text">
-								<img src="/static/geekshop/img/icon-hover.png" alt="img">
-								<h4>Стул повышенного качества</h4>
-								<p>Не оторваться. </p>
-							</div>
-						</a>
-					</div>
-
-				</div>
-			</div>
+		</div>
 		</div>
 
 		<div class="clr"></div>
