@@ -1,0 +1,47 @@
+[
+  {
+      "category": "Стулья",
+      "name": "Удобный стул",
+      "image": "products_images/product-4.jpg",
+      "short_desc": "",
+      "description": "",
+      "price": "1979.56",
+      "quantity": 198
+  },
+  {
+      "category": "Светильники",
+      "name": "Настольная лампа",
+      "image": "products_images/product-31.jpg",
+      "short_desc": "",
+      "description": "",
+      "price": "1599.99",
+      "quantity": 21
+  },
+  {
+      "category": "Светильники",
+      "name": "красивое бра",
+      "image": "products_images/product-41.jpg",
+      "short_desc": "",
+      "description": "",
+      "price": "1099.49",
+      "quantity": 17
+  },
+  {
+      "category": "Чайники",
+      "name": "чайник страм",
+      "image": "products_images/product-3.jpg",
+      "short_desc": "",
+      "description": "",
+      "price": "999.00",
+      "quantity": 94
+  },
+  {
+      "category": "Светильники",
+      "name": "Модная лампа",
+      "image": "products_images/product-1.jpg",
+      "short_desc": "настольная лампа",
+      "description": "Совсем свежая от дизайнера лампа",
+      "price": "1200.99",
+      "quantity": 5
+  }
+]
