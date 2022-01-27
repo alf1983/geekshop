@@ -6,8 +6,6 @@
 {% block content %}
 	<div class="hero-white">
 			{% include 'includes/main_menu.html' %}
-                <a href="#" class="basket"></a>
-			</div>
 		</div>
 
 		<div class="details">
@@ -20,30 +18,39 @@
     				<li class="dropdown-toggle" data-toggle="dropdown"><a href="#">Категории</a></li>
 					<div class="dropdown-menu">
 						{% for cat in all_categories %}
-							<a class="dropdown-item" href="{% url 'products:index' %}{{ cat.id }}">{{ cat }}</a>
+							<a class="dropdown-item" href="{% url 'products:category' cat.id %}">{{ cat }}</a>
 						{% endfor %}
 					</div>
 
 				</ul>
 			</div>
 			<div class="featured">
-			<a class="explore" href="#">показать все <img src="{% static 'geekshop/img/arrow.png' %}" alt=""></a>
-			<div class="clearfix">
-			</div>
-			<div class="tab-content">
-				{% for product in products %}
-				<div class="block">
-					<a href="#"><img src="/media/{{ product.image }}" alt="{{ product.short_desc }}" style="width: 100%;">
-						<div class="text">
-							<img src="/static/geekshop/img/icon-hover.png" alt="arrow">
-							<h4>{{ product.category.name }}</h4>
-							<h4>{{ product.name }}</h4>
-							<p>{{ product.category.name|title }}</p>
-						</div>
-					</a>
+				<div class="title clearfix">
+        			<h2>
+          				Категория: "{{ category.name|title }}"
+        			</h2>
+      			</div>
+				<a class="explore" href="">показать все <img src="{% static 'geekshop/img/arrow.png' %}" alt=""></a>
+				<div class="clearfix"></div>
+				<div class="tab-content">
+					{% for product in products %}
+					<div class="block">
+						<a href="{% url 'products:product' product.id %}"><img src="/media/{{ product.image }}" alt="{{ product.short_desc }}" style="width: 100%;">
+							<div class="text" style="width: 100%;">
+								<img src="/static/geekshop/img/icon-hover.png" alt="arrow">
+								<h4>{{ product.category.name }}</h4>
+								<h4>Заказать {{ product.name }}</h4>
+								<p>{{ product.category.name|title }}</p>
+							</div>
+						</a>
+						{% if user.is_authenticated %}
+							<a href="{% url 'basket:add' product.pk %}">
+								<h6>Отпраить в карзину {{ product.name | title }}</h6>
+							</a>
+						{% endif %}
+					</div>
+					{% endfor %}
 				</div>
-				{% endfor %}
-			</div>
 		</div>
 		</div>
 

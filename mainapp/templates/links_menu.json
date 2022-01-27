@@ -1,5 +1,5 @@
 [
-        {"href": "products_all", "name": "все"},
+        {"href": "/products/0/", "name": "все"},
         {"href": "products_home", "name": "дом"},
         {"href": "products_office", "name": "офис"},
         {"href": "products_modern", "name": "модерн"},
