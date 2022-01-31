@@ -1,9 +1,23 @@
 import json
+import random
 
 from django.shortcuts import render, get_object_or_404
 
 from basketapp.models import Basket
 from .models import ProductCategory, Product
+
+
+def get_hot_product():
+    products = Product.objects.all()
+
+    return random.sample(list(products), 1)[0]
+
+
+def get_same_products(hot_product):
+    same_products = Product.objects.filter(category=hot_product.category). \
+                        exclude(pk=hot_product.pk)[:3]
+
+    return same_products
 
 
 def products(request, pk=None):
@@ -35,7 +49,7 @@ def products(request, pk=None):
     #     {'href': 'products_classic', 'name': 'классика'},
     # ]
     all_categories = ProductCategory.objects.all()
-
+    hot_product = []
     if pk is not None:
         if pk == 0:
             products = Product.objects.all().order_by('price')
@@ -44,8 +58,9 @@ def products(request, pk=None):
             category = get_object_or_404(ProductCategory, pk=pk)
             products = Product.objects.filter(category__pk=pk).order_by('price')
     else:
-        products = Product.objects.all().order_by('price')[:4]
-        category = {'name': 'Популярные'}
+        hot_product = get_hot_product()
+        products = get_same_products(hot_product)
+        category = {'name': 'горячие предложение'}
     # same_products = Product.objects.all()[3:5]
 
     context = {
@@ -55,7 +70,8 @@ def products(request, pk=None):
         'all_categories': all_categories,
         'category': category,
         'basket': basket,
-        'total': total
+        'total': total,
+        'hot_product': hot_product
     }
     return render(request, 'products.html', context=context)
 

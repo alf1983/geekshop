@@ -25,6 +25,9 @@
 							Вход в систему
 						</span>
 						{% csrf_token %}
+						{% if next %}
+							<input type="hidden" name="next" value="{{ next }}">
+						{% endif %}
 					{% for form_field in login_form %}
 						<div class="wrap-input100 validate-input" data-validate = "Field is required">
 							{{ form_field.label_tag }}

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'mainapp',
     'authapp',
     'basketapp',
@@ -105,6 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
     # },
 ]
 
+LOGIN_URL = '/auth/login/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
