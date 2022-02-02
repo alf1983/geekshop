@@ -38,6 +38,7 @@
                         </tr>
                         </tfoot>
                         <tbody>
+                        {#{ objects }#}
                         {% for user in objects %}
                             <tr {% if not user.is_active %} style="opacity: 0.5; text-decoration: line-through;" {% endif %}>
                                 <td><a href="{% url 'myadmin:user_update' user.id %}" style="color: dodgerblue">{{ user.username }}</a></td>
