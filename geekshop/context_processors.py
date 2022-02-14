@@ -2,11 +2,13 @@ from django.http import HttpResponse
 
 
 def get_route(request):
-    route = request.get_full_path().split("/")[1]
-    if not route:
-        route = 'home'
+    route = request.get_full_path().split("/")
+    if not route[1]:
+        route[1] = 'home'
+        route.append("")
     return {
-        "route": route
+        "route": route[1],
+        "route_admin": route[2]
     }
 
 
