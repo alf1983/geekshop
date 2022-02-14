@@ -23,6 +23,13 @@
 						</a>
 					</li>
 				{% endif %}
+  				{% if user.is_superuser %}
+    				<li>
+      					<a href="{% url 'myadmin:users' %}">
+							админка
+						</a>
+    				</li>
+  				{% endif %}
 					<li>
     			{% if user.is_authenticated %}
       					<a href="{% url 'auth:logout' %}">
@@ -34,6 +41,7 @@
 						</a>
     			{% endif %}
 					</li>
+					{% if not user.is_superuser %}
 					<li class="dropdown-toggle {% if route == "basket" %}active{% endif %}" data-toggle="dropdown">
 						 Карзина
 					</li>
@@ -76,6 +84,7 @@
 							<p class="dropdown-item">Карзина пуста</p>
 							{% endif %}
 						</div>
+					{% endif %}
 					</ul>
 					<a href="#" class="search"></a>
 

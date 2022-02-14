@@ -41,7 +41,7 @@
 						<p class="price"> {{ hot_product.price }} <span>руб</span></p>
 						<a href="
 							{% if user.is_authenticated %}
-								{% url 'basket:add' product.pk %}
+								{% url 'basket:add' hot_product.pk %}
 							{% else %}
 								{% url 'auth:login' %}
 							{% endif %}

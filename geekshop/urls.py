@@ -19,12 +19,13 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from .views import index, contacts
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('django-admin/', admin.site.urls),
     path('', index, name="index"),
     path('contacts/', contacts, name="contacts"),
     path('products/', include('mainapp.urls', namespace="products")),
     path('auth/', include('authapp.urls', namespace='auth')),
     path('basket/', include('basketapp.urls', namespace='basket')),
+    path('admin/', include('adminapp.urls', namespace='myadmin')),
 ]
 
 if settings.DEBUG:

@@ -53,6 +53,8 @@ class ShopUserEditForm(UserChangeForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
+            if field_name == "is_superuser" or field_name == "is_active" or field_name == "is_staff":
+                field.widget.attrs['class'] = 'form-control form-check-input'
             if field_name == 'password' or field_name == 'username' or field_name == 'age':
                 field.widget = forms.HiddenInput()
 
