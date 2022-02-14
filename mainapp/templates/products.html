@@ -24,6 +24,36 @@
 
 				</ul>
 			</div>
+			{% if hot_product %}
+				<div class="details-products">
+					<div class="details-slider">
+						<div class="slider-product">
+							<img src="/media/{{ hot_product.image }}">
+							<div class="slider-control">
+						</div>
+						</div>
+
+					</div>
+
+					<div class="description">
+						<h3 class="big-bold">{{ hot_product.name | title }}</h3>
+						<h3 class="red">Горячее Предложение</h3>
+						<p class="price"> {{ hot_product.price }} <span>руб</span></p>
+						<a href="
+							{% if user.is_authenticated %}
+								{% url 'basket:add' product.pk %}
+							{% else %}
+								{% url 'auth:login' %}
+							{% endif %}
+						" class="red-button">
+							заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
+						</a>
+						<div class="description-text">
+							<p>{{ hot_product.description }}</p>
+						</div>
+					</div>
+				</div>
+			{% endif %}
 			<div class="featured">
 				<div class="title clearfix">
         			<h2>
