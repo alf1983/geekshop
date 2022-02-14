@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import products
 import mainapp.views as mainapp
 
 app_name = 'mainapp'
@@ -9,6 +8,7 @@ app_name = 'mainapp'
 urlpatterns = [
     path('', mainapp.products, name="index"),
     path('<int:pk>/', mainapp.products, name='category'),
+    path('product/<int:pk>/', mainapp.product, name='product'),
 ]
 
 if settings.DEBUG:

@@ -3,14 +3,13 @@
 	{% block content %}
 		<div class="hero-white">
 				{% include 'includes/main_menu.html' %}
-			</div>
 		</div>
 		<div class="slider">
 			<div class="text-slider">
 				<h3 class="green">тенденции</h3>
 				<h3 class="big"> удобные стулья</h3>
 				<p>Новый уровень комфорта. Отличные характеристики.</p>
-				<a href="#" class="button-order">заказать <img src="{% static 'geekshop/img/arrow.png' %}" alt=""></a>
+				<a href="{% url 'products:category' 19 %}" class="button-order">Выбрать <img src="{% static 'geekshop/img/arrow.png' %}" alt=""></a>
 			</div>	
 			<div class="navi">
 				<a href="#"></a><a href="#"></a><a href="#"></a>
@@ -27,13 +26,16 @@
 			<div class="tab-content">
 				{% for product in products %}
 				<div class="block">
-					<a href="#"><img src="/media/{{ product.image }}" alt="{{ product.short_desc }}" style="width: 100%;">
+					<a href="{% url 'products:product' product.id %}"><img src="/media/{{ product.image }}" alt="{{ product.short_desc }}" style="width: 100%;">
 						<div class="text">
 							<img src="/static/geekshop/img/icon-hover.png" alt="arrow">
 							<h4>{{ product.name }}</h4>
 							<p>{{ product.category.name|title }}</p>
 						</div> 
 					</a>
+					{% if user.is_authenticated %}
+						<a href="{% url 'basket:add' product.pk %}"><h6>Отпраить в карзину {{ product.name | title }}</h6></a>
+					{% endif%}
 				</div>
 				{% endfor %}
 			</div>

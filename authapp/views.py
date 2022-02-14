@@ -3,6 +3,8 @@ from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditF
 from django.contrib import auth
 from django.urls import reverse
 
+from basketapp.models import Basket
+
 
 def login(request):
     title = 'вход'
@@ -54,6 +56,20 @@ def register(request):
 
 def edit(request):
     title = 'редактирование'
+    basket = []
+    total = 0
+    if request.user.is_authenticated:
+        # basket = Basket.objects.filter(user=request.user)
+        basket_user = Basket.calc(request.user)
+        for basket_user_raw in basket_user:
+            _basket_item = {
+                'item_name': basket_user_raw.product.name,
+                'price_for_item': basket_user_raw.product.price,
+                'quantity': basket_user_raw.quantity,
+                'item_total_price': basket_user_raw.product.price * basket_user_raw.quantity
+            }
+            total += _basket_item['item_total_price']
+            basket.append(_basket_item)
     form_errors = ""
     if request.method == 'POST':
         edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
@@ -68,7 +84,9 @@ def edit(request):
     content = {
         'title': title,
         'edit_form': edit_form,
-        'errors': form_errors
+        'errors': form_errors,
+        'basket': basket,
+        'total': total
     }
 
     return render(request, 'authapp/edit.html', content)
