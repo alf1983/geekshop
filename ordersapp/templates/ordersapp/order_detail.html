@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'ordersapp/style.css' %}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+{% block content %}
+    <div class="hero-white">
+        {% include 'includes/main_menu.html' %}
+	</div>
+<div class="container px-3 my-5 clearfix">
+        <!-- Shopping cart table -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Заказ №{{ object.pk }} от {{ object.created|date:"Y-m-d H:i:s" }}</h2>
+                    <div class="h4">заказчик: {{ user.last_name }} {{ user.first_name }} </div>
+                    <div class="h4">обновлен: {{ object.updated|date:"Y-m-d H:i:s" }}</div>
+                    <div class="h4">cтатус: {{ object.get_status_display }}</div>
+            </div>
+        </div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered m-0">
+            <thead>
+              <tr>
+                <!-- Set columns width -->
+                <th class="text-center py-3 px-4" style="min-width: 300px;">Наименование продукта и детали</th>
+                <th class="text-right py-3 px-4" style="width: 130px;">Цена</th>
+                <th class="text-center py-3 px-4" style="width: 110px;">Количество</th>
+                <th class="text-right py-3 px-4" style="width: 120px;">Всего</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for order_item in object.orderitems.select_related %}
+              <tr>
+                <td class="p-4">
+                  <div class="media align-items-center">
+                    <img src="/media/{{ order_item.product.image }}" class="d-block ui-w-40 ui-bordered mr-4" alt="{{ order_item.product.name }}" style="width: 25%;">
+                    <div class="media-body">
+                      <a href="#" class="d-block text-dark">{{ order_item.product.name }}</a>
+                      <small>
+                      </small>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-right font-weight-semibold align-middle p-4">{{ order_item.product.price }} руб.</td>
+                <td class="text-right font-weight-semibold align-middle p-4">x {{ order_item.quantity }} шт.</td>
+                <td class="text-right font-weight-semibold align-middle p-4">{{ order_item.get_product_cost }} руб.</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
+        <div class="text-right mt-4">
+            <label class="text-muted font-weight-normal m-0">Общая стоймость:</label>
+            <div class="text-large"><strong>{{ object.get_total_cost }} руб.</strong></div>
+        </div>
+    </div>
+    <div class="float-right">
+        <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3"><a href="{% url 'index' %}">На главную</a></button>
+        <button type="button" class="btn btn-lg btn-danger mt-2"><a style="color: #fff;" href="{% url 'ordersapp:order_delete' object.pk %}">удалить</a></button>
+    </div>
+</div>
+</div>
+    <div class="clr"></div>
+{% endblock %}

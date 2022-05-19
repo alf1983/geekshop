@@ -57,7 +57,7 @@ def basket_add(request, pk):
 @login_required
 def basket_remove(request, pk):
     content = {}
-    return render(request, 'basketapp/basket.html', content)
+    return render(request, 'basketapp/order_form.html', content)
 
 
 @login_required

@@ -27,6 +27,7 @@ def ajax_test(request):
 def get_basket(request):
     basket = []
     total = 0
+    total_quantity = 0
     if request.user.is_authenticated:
         basket_user = Basket().calc(request.user)
         for basket_user_raw in basket_user:
@@ -36,6 +37,7 @@ def get_basket(request):
                 'quantity': basket_user_raw.quantity,
                 'item_total_price': basket_user_raw.product.price * basket_user_raw.quantity
             }
+            total_quantity += basket_user_raw.quantity
             total += _basket_item['item_total_price']
             basket.append(_basket_item)
-    return {"basket": basket, "total": total}
+    return {"basket": basket, "total": total, "basket_total_quantity": total_quantity}
