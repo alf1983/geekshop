@@ -34,8 +34,8 @@ class Order(models.Model):
         verbose_name = 'заказ'
         verbose_name_plural = 'заказы'
 
-        def __str__(self):
-            return f'Текущий заказ: {self.id}'
+    def __str__(self):
+        return f'Текущий заказ: {self.id}'
 
     def get_total_quantity(self):
         items = self.orderitems.select_related()
