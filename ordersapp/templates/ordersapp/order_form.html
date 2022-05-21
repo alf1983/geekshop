@@ -29,14 +29,22 @@
                     {% endif %}
                     <tr class="formset_row">
                         {% for field in form.visible_fields %}
-                            <td class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
+                            <td class="{% cycle 'td1' 'td2' 'td3' 'td4' %} order formset_td">
                                 {% if forloop.first %}
                                     {% for hidden in form.hidden_fields %}
                                         {{ hidden }}
                                     {% endfor %}
                                 {% endif %}
                                 {{ field.errors.as_ul }}
-                                {{ field }}
+                                {% if field.name != 'price' %}
+                                    {{ field }}
+                                {% else %}
+                                    {% if field.value %}
+                                        <span class="orderitems-{{forloop.parentloop.counter0}}-price">
+                                            {{ field.value }} руб.
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
                             </td>
                         {% endfor %}
                     </tr>
@@ -48,4 +56,8 @@
         </form>
     </div>
 <div class="clr"></div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="{% static 'ordersapp/js/jquery.formset.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ordersapp/js/script.js' %}"></script>
 {% endblock %}

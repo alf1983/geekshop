@@ -2,8 +2,11 @@ import json
 import random
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.template.loader import render_to_string
 
+from geekshop.context_processors import ajax_test
 from .models import ProductCategory, Product
 
 
@@ -85,3 +88,11 @@ def product(request, pk=None):
         'same_products': same_products
     }
     return render(request, 'product.html', context=context)
+
+
+def get_product_price(request, pk=None):
+    if pk is not None:
+        product = get_object_or_404(Product, pk=int(pk), is_active=True, category__is_active=True)
+        return JsonResponse({'result': product.price})
+    return JsonResponse({'result': "error"})
+

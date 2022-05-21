@@ -65,10 +65,6 @@ class OrderItem(models.Model):
     def get_product_cost(self):
         return self.product.price * self.quantity
 
-    def get_order_cost(self):
-        print(self.order)
-        return
-
     @staticmethod
     def get_item(pk):
         return OrderItem.objects.filter(pk=pk).first()

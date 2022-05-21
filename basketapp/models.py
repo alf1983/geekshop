@@ -12,3 +12,7 @@ class Basket(models.Model):
     @staticmethod
     def calc(user):
         return __class__.objects.filter(user=user).all()
+
+    @staticmethod
+    def get_item(pk):
+        return Basket.objects.filter(pk=pk).first()
