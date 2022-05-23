@@ -1,0 +1,20 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <form class="form-horizontal" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for update_form_field in update_form %}
+            {{ update_form_field.label }}
+            {{ update_form_field }}
+            {% if not category and update_form_field.name == 'category' %}
+                Если нет подходящей категории создайте сначала новую
+                <a href="{% url 'adminapp:category_create' %}">
+                    <button class="btn btn-success">Создать категорию</button>
+                </a><br>
+            {% endif %}
+        {% endfor %}
+        {{ update_form }}
+      <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+{% endblock %}

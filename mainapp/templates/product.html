@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{% static 'mainapp/style.css' %}">
+{% endblock %}
+{% block content %}
+	<div class="hero-white">
+			{% include 'includes/main_menu.html' %}
+		</div>
+
+		<div class="details">
+			<div class="links clearfix">
+				<ul class="links-menu">
+					{% for item_menu in links_menu%}
+						<li><a href="{{ item_menu.href }}">{{ item_menu.name|title }}</a> </li>
+					{% endfor %}
+
+    				<li class="dropdown-toggle" data-toggle="dropdown"><a href="#">Категории</a></li>
+					<div class="dropdown-menu">
+						{% for cat in all_categories %}
+							<a class="dropdown-item" href="{% url 'products:category' cat.id %}">{{ cat }}</a>
+						{% endfor %}
+					</div>
+
+				</ul>
+			</div>
+
+			<div class="details-products">
+				<div class="details-slider">
+					<div class="slider-product">
+						<img src="/media/{{ product.image }}">
+						<div class="slider-control">
+					</div>
+					</div>
+
+				</div>
+
+				<div class="description">
+					<h3 class="big-bold">{{ product.name | title }}</h3>
+					<h3 class="red">{{ product.short_desc }}</h3>
+					<p class="price"> {{ product.price }} <span>руб</span></p>
+					<a href="{% url 'basket:add' product.pk %}" class="red-button">
+						заказать <i class="fa fa-chevron-right" aria-hidden="true"></i>
+					</a>
+					<div class="description-text">
+						<p>{{ product.description }}</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="related">
+				<div class="title clearfix">
+					<h2>Похожие продукты (категория "{{ category }}")</h2>
+					<a class="explore" href="{% url 'products:category' category.id %}">
+						показать все из "{{ category }}"<img src="/static/geekshop/img/arrow.png" alt="">
+					</a>
+				</div>
+				<div class="related-products clearfix">
+					{% for same_product in same_products %}
+					<div class="block">
+						<a href="{% url 'products:product' same_product.id %}">
+							<img src="/media/{{ same_product.image }}" alt="{{ same_product.short_desc }}" style="width: 100%;">
+							<div class="text" style="width: 100%;">
+								<img src="/static/geekshop/img/icon-hover.png" alt="arrow">
+								<h4>{{ category }}</h4>
+								<h4>Заказать {{ same_product.name }}</h4>
+								<p>{{ category|title }}</p>
+							</div>
+						</a>
+						{% if user.is_authenticated %}
+							<a href="{% url 'basket:add' same_product.pk %}">
+								<h6>Отпраить в карзину {{ same_product.name | title }}</h6>
+							</a>
+						{% endif %}
+					</div>
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+
+		<div class="clr"></div>
+{% endblock %}
