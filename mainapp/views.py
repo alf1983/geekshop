@@ -38,7 +38,7 @@ def products(request, pk=None, page=1):
     else:
         hot_product = get_hot_product()
         products = get_same_products(hot_product)
-        category = {'name': 'горячие предложение'}
+        category = {'name': 'горячие предложение', 'pk': 0}
     paginator = Paginator(products, 2)
     try:
         products_paginator = paginator.page(page)
