@@ -23,7 +23,7 @@
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Профель</h4>
+                    <h4 class="text-right">Профиль</h4>
                 </div>
                 <form action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
                     {{ edit_form.username }}
@@ -36,7 +36,21 @@
                         <div class="col-md-12"><label class="labels">{{ edit_form.email.label }}</label>{{ edit_form.email }}</div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-md-12">{{ edit_form.avatar }}</div>
+                        <div class="col-md-12">
+                            <label class="labels">{{ edit_form.avatar.label }}</label>{{ edit_form.avatar }}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">{{ profile_form.social_link.label }}</label>{{ profile_form.social_link }}</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-4"><label class="labels">{{ profile_form.gender.label }}</label>{{ profile_form.gender }}</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">{{ profile_form.tagline.label }}</label>{{ profile_form.tagline }}</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">{{ profile_form.about_me.label }}</label>{{ profile_form.about_me }}</div>
                     </div>
                     <div class="mt-5 text-center">
                         <input class="btn btn-primary profile-button" type="submit" value="сохранить">

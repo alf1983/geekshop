@@ -21,11 +21,15 @@ from .views import index, contacts
 urlpatterns = [
     path('django-admin/', admin.site.urls),
     path('', index, name="index"),
+
     path('contacts/', contacts, name="contacts"),
     path('products/', include('mainapp.urls', namespace="products")),
     path('auth/', include('authapp.urls', namespace='auth')),
     path('basket/', include('basketapp.urls', namespace='basket')),
+    path('orders/', include('ordersapp.urls', namespace='orders')),
     path('admin/', include('adminapp.urls', namespace='myadmin')),
+
+    path('', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:

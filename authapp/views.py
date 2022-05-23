@@ -1,9 +1,11 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponseRedirect
-from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm
+from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileForm
 from django.contrib import auth
 from django.urls import reverse
 
-from basketapp.models import Basket
+from authapp.models import ShopUser
+from geekshop import settings
 
 
 def login(request):
@@ -16,7 +18,7 @@ def login(request):
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
-            auth.login(request, user)
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             if 'next' in request.POST.keys():
                 return HttpResponseRedirect(request.POST['next'])
             else:
@@ -43,7 +45,11 @@ def register(request):
     if request.method == 'POST':
         register_form = ShopUserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
-            register_form.save()
+            user = register_form.save()
+            if send_verify_mail(user):
+                print('сообщение подтверждения отправлено')
+            else:
+                print('ошибка отправки сообщения')
             return HttpResponseRedirect(reverse('auth:login'))
     else:
         register_form = ShopUserRegisterForm()
@@ -59,39 +65,52 @@ def register(request):
     return render(request, 'authapp/register.html', content)
 
 
+def send_verify_mail(user):
+    verify_link = reverse('auth:verify', args=[user.email, user.activation_key])
+
+    title = f'Подтверждение учетной записи {user.username}'
+
+    message = f'Для подтверждения учетной записи {user.username} на портале {settings.DOMAIN_NAME} ' \
+              f'перейдите по ссылке: \n{settings.DOMAIN_NAME}{verify_link}'
+
+    return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+
+
 def edit(request):
     title = 'редактирование'
-    basket = []
-    total = 0
-    if request.user.is_authenticated:
-        # basket = Basket.objects.filter(user=request.user)
-        basket_user = Basket.calc(request.user)
-        for basket_user_raw in basket_user:
-            _basket_item = {
-                'item_name': basket_user_raw.product.name,
-                'price_for_item': basket_user_raw.product.price,
-                'quantity': basket_user_raw.quantity,
-                'item_total_price': basket_user_raw.product.price * basket_user_raw.quantity
-            }
-            total += _basket_item['item_total_price']
-            basket.append(_basket_item)
     form_errors = ""
     if request.method == 'POST':
         edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
-        if edit_form.is_valid():
+        profile_form = ShopUserProfileForm(request.POST, instance=request.user.shopuserprofile)
+        if edit_form.is_valid() and profile_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
         else:
             form_errors = edit_form.errors
     else:
         edit_form = ShopUserEditForm(instance=request.user)
-
+        profile_form = ShopUserProfileForm(instance=request.user.shopuserprofile)
     content = {
         'title': title,
         'edit_form': edit_form,
-        'errors': form_errors,
-        'basket': basket,
-        'total': total
+        'profile_form': profile_form,
+        'errors': form_errors
     }
 
     return render(request, 'authapp/edit.html', content)
+
+
+def verify(request, email, activation_key):
+    try:
+        user = ShopUser.objects.get(email=email)
+        if user.activation_key == activation_key and not user.is_activation_key_expired():
+            user.is_active = True
+            user.save()
+            auth.login(request, user)
+            return render(request, 'authapp/verification.html')
+        else:
+            print(f'error activation user: {user}')
+            return render(request, 'authapp/verification.html')
+    except Exception as e:
+        print(f'error activation user : {e.args}')
+        return HttpResponseRedirect(reverse('index'))

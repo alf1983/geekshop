@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'ordersapp/style.css' %}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+{% block content %}
+    <div class="hero-white">
+        {% include 'includes/main_menu.html' %}
+	</div>
+    <div class="container">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h2>
+                                Ваши заказы, {% if user.first_name %} {{ user.first_name|title}}{% else %} Пользователь {% endif %}
+                            </h2>
+                        </div>
+    <!--                    <div class="col-sm-4">-->
+    <!--                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>-->
+    <!--                    </div>-->
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Создан</th>
+                            <th>Обнавлён</th>
+                            <th>Статус</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in object_list %}
+                        {% if item.is_active %}
+                        <tr>
+                            <td><a href="{% url 'orders:order_read' item.pk %}">{{ item.pk }}</a></td>
+                            <td>{{ item.created|date:"Y-m-d H:i:s" }}</td>
+                            <td>{{ item.updated|date:"Y-m-d H:i:s" }}</td>
+                            <td>{{ item.get_status_display }}</td>
+                            <td>
+                            {% if item.status == 'FM' %}
+                                <a href="{% url 'ordersapp:order_update' item.pk %}" class="edit" title="Edit" data-toggle="tooltip">
+                                    <i class="material-icons">&#xE254;</i>
+                                </a>
+                                <a href="{#% url 'ordersapp:order_delete' item.pk %#}" class="delete" title="Delete" data-toggle="tooltip">
+                                    <i class="material-icons">&#xE872;</i>
+                                </a>
+                            {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="clr"></div>
+{% endblock %}

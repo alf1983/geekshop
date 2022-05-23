@@ -10,6 +10,7 @@ urlpatterns = [
     path('<int:pk>/', mainapp.products, name='category'),
     path('<int:pk>/page/<int:page>/', mainapp.products, name='page'),
     path('product/<int:pk>/', mainapp.product, name='product'),
+    path('product/price/<int:pk>/', mainapp.get_product_price, name='get_price'),
 ]
 
 if settings.DEBUG:
