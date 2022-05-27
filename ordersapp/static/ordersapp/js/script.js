@@ -1,4 +1,4 @@
-window.onload = function hello () {
+window.onload = function () {
     var _quantity, _price, orderitem_num, delta_quantity, orderitem_quantity, delta_cost;
     var quantity_arr = [];
     var price_arr = [];
