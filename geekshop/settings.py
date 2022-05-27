@@ -52,7 +52,9 @@ INSTALLED_APPS = [
     'ordersapp',
 
     'social_django',
-    'django_extensions'
+    'django_extensions',
+    'debug_toolbar',
+    'template_profiler_panel'
 ]
 
 AUTH_USER_MODEL = 'authapp.ShopUser'
@@ -71,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'geekshop.urls'
@@ -131,7 +134,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    # 'default': {
+    #     'NAME': 'geekshop',
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'USER': 'postgres',
+    # }
 }
 
 
@@ -172,6 +180,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'geekshop', 'static'),
 ]
@@ -194,3 +204,25 @@ EMAIL_USE_SSL = False
 SOCIAL_AUTH_FACEBOOK_KEY = env.str('SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = env.str('SOCIAL_AUTH_FACEBOOK_SECRET')
 LOGIN_REDIRECT_URL = '/'
+if DEBUG:
+    def show_toolbar(request):
+        return True
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+    }
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+        'debug_toolbar.panels.profiling.ProfilingPanel',
+        'template_profiler_panel.panels.template.TemplateProfilerPanel',
+    ]
